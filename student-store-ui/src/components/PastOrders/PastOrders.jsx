@@ -28,9 +28,13 @@ export default function PastOrders() {
   }, [activeEmail])
 
   useEffect(() => {
-    if (openOrderId == null) { setOpenOrder(null); return }
+    setOpenOrder(null)
+    if (openOrderId == null) return
     let cancelled = false
-    api.get(`/orders/${openOrderId}`).then((res) => { if (!cancelled) setOpenOrder(res.data) })
+    api
+      .get(`/orders/${openOrderId}`)
+      .then((res) => { if (!cancelled) setOpenOrder(res.data) })
+      .catch((err) => { if (!cancelled) setError(err.message || "Failed to load order") })
     return () => { cancelled = true }
   }, [openOrderId])
 

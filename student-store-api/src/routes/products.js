@@ -3,11 +3,17 @@ const Product = require('../models/product')
 
 const router = express.Router()
 
+function firstQueryValue(value) {
+  if (Array.isArray(value)) return value[0]
+  if (typeof value === 'object' && value !== null) return undefined
+  return value
+}
+
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      category: req.query.category,
-      sort: req.query.sort,
+      category: firstQueryValue(req.query.category),
+      sort: firstQueryValue(req.query.sort),
     })
     res.json(products)
   } catch (err) {

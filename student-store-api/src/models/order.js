@@ -48,6 +48,12 @@ class Order {
         throw new BadRequestError('each item needs an integer productId and a positive integer quantity')
       }
     }
+    if (customerEmail !== undefined && customerEmail !== null && typeof customerEmail !== 'string') {
+      throw new BadRequestError('customerEmail must be a string or null')
+    }
+    if (status !== undefined && (typeof status !== 'string' || status === '')) {
+      throw new BadRequestError('status must be a non-empty string')
+    }
 
     const merged = new Map()
     for (const item of items) {

@@ -3,9 +3,15 @@ const Order = require('../models/order')
 
 const router = express.Router()
 
+function firstQueryValue(value) {
+  if (Array.isArray(value)) return value[0]
+  if (typeof value === 'object' && value !== null) return undefined
+  return value
+}
+
 router.get('/', async (req, res, next) => {
   try {
-    const orders = await Order.findAll({ customerEmail: req.query.customerEmail })
+    const orders = await Order.findAll({ customerEmail: firstQueryValue(req.query.customerEmail) })
     res.json(orders)
   } catch (err) {
     next(err)
