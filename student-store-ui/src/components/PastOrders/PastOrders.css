@@ -1,0 +1,60 @@
+.PastOrders {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.PastOrders .filter {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.PastOrders .filter input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.PastOrders .filter button {
+  padding: 0.5rem 1rem;
+}
+
+.PastOrders .error {
+  color: #c00;
+}
+
+.PastOrders .orders {
+  list-style: none;
+  padding: 0;
+}
+
+.PastOrders .order {
+  border: 1px solid #ddd;
+  margin-bottom: 0.5rem;
+}
+
+.PastOrders .order-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  background: #fafafa;
+  border: 0;
+  padding: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.PastOrders .order-summary:hover {
+  background: #eee;
+}
+
+.PastOrders .order-details {
+  padding: 0.75rem 1rem;
+  background: #fff;
+}
+
+.PastOrders .order-details ul {
+  margin: 0.5rem 0 0.5rem 1rem;
+}

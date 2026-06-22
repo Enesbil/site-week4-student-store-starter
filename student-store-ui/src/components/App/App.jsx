@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
 import SubNavbar from "../SubNavbar/SubNavbar";
 import Sidebar from "../Sidebar/Sidebar";
 import Home from "../Home/Home";
 import ProductDetail from "../ProductDetail/ProductDetail";
+import PastOrders from "../PastOrders/PastOrders";
 import NotFound from "../NotFound/NotFound";
+import { api } from "../../utils/api";
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart";
 import "./App.css";
 
 function App() {
-
-  // State variables
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All Categories");
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [userInfo, setUserInfo] = useState({ name: "", dorm_number: ""});
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [isFetching, setIsFetching] = useState(false);
@@ -23,10 +22,19 @@ function App() {
   const [error, setError] = useState(null);
   const [order, setOrder] = useState(null);
 
-  // Toggles sidebar
+  useEffect(() => {
+    let cancelled = false;
+    setIsFetching(true);
+    api
+      .get("/products")
+      .then((res) => { if (!cancelled) setProducts(res.data); })
+      .catch((err) => { if (!cancelled) setError(err.message || "Failed to load products"); })
+      .finally(() => { if (!cancelled) setIsFetching(false); });
+    return () => { cancelled = true; };
+  }, []);
+
   const toggleSidebar = () => setSidebarOpen((isOpen) => !isOpen);
 
-  // Functions to change state (used for lifting state)
   const handleOnRemoveFromCart = (item) => setCart(removeFromCart(cart, item));
   const handleOnAddToCart = (item) => setCart(addToCart(cart, item));
   const handleGetItemQuantity = (item) => getQuantityOfItemInCart(cart, item);
@@ -37,8 +45,39 @@ function App() {
   };
 
   const handleOnCheckout = async () => {
-  }
+    const items = Object.entries(cart).map(([id, quantity]) => ({
+      productId: Number(id),
+      quantity,
+    }));
 
+    if (items.length === 0) {
+      setError("Your cart is empty.");
+      return;
+    }
+    if (!userInfo.email) {
+      setError("Please enter an email address.");
+      return;
+    }
+
+    setIsCheckingOut(true);
+    setError(null);
+    try {
+      const customer = Math.abs(
+        [...userInfo.email].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7),
+      );
+      const res = await api.post("/orders", {
+        customer,
+        customerEmail: userInfo.email,
+        items,
+      });
+      setOrder(res.data);
+      setCart({});
+    } catch (err) {
+      setError(err.response?.data?.error || err.message || "Checkout failed");
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
   return (
     <div className="App">
@@ -84,6 +123,7 @@ function App() {
                 />
               }
             />
+            <Route path="/orders" element={<PastOrders />} />
             <Route
               path="/:productId"
               element={
@@ -116,4 +156,3 @@ function App() {
 }
 
 export default App;
- 

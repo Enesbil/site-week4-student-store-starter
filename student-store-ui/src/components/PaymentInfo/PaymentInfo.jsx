@@ -10,7 +10,7 @@ export default function PaymentInfo({ userInfo, setUserInfo, handleOnCheckout, i
         </span>
       </h3>
       <div className="input-field">
-        <label className="label">Student ID</label>
+        <label className="label">Name</label>
         <div className="control ">
           <input
             className="input"
@@ -23,39 +23,24 @@ export default function PaymentInfo({ userInfo, setUserInfo, handleOnCheckout, i
       </div>
 
       <div className="input-field">
-        <label className="label">Dorm Room Number</label>
+        <label className="label">Email</label>
         <div className="control">
           <input
             className="input"
             type="email"
-            placeholder="Email"
-            value={userInfo.id}
+            placeholder="you@example.com"
+            value={userInfo.email}
             onChange={(e) => setUserInfo((u) => ({ ...u, email: e.target.value }))}
           />
         </div>
       </div>
 
-      {/* <div className="field">
-        <div className="control">
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={userInfo.termsAndConditions}
-              onChange={(e) => setUserInfo((u) => ({ ...u, termsAndConditions: !u.termsAndConditions }))}
-            />
-            <span className="label">
-              I agree to the <a href="#terms-and-conditions">terms and conditions</a>
-            </span>
-          </label>
-        </div>
-      </div> */}
-
-      <p className="is-danger">{error}</p>
+      {error ? <p className="is-danger">{String(error)}</p> : null}
 
       <div className="field">
         <div className="control">
           <button className="button" disabled={isCheckingOut} onClick={handleOnCheckout}>
-            Submit
+            {isCheckingOut ? "Submitting..." : "Submit"}
           </button>
         </div>
       </div>
