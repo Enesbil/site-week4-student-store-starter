@@ -2,8 +2,7 @@
 
 Submitted by: **Muhammed Enes Bilek**
 
-Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
-
+LOOM RECORDING: https://www.loom.com/share/765354579f4246f6b259a930e0502e96
 ### Application Features
 
 #### CORE FEATURES
@@ -98,21 +97,21 @@ See [student-store-api/planning.md](student-store-api/planning.md) for the full 
 
 ### Walkthrough Video
 
-`ADD_EMBEDDED_CODE_HERE`
+https://www.loom.com/share/765354579f4246f6b259a930e0502e96
 
 ### Reflection
 
 * Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
 
-Add your response here
+The labs covered the Prisma basics and Express routing pretty well, so getting the product CRUD up was straightforward. The part I felt least prepared for was the transactional POST /orders. We had touched on Prisma transactions in lab but doing it end to end (validate, fetch products, compute total server side, insert the order plus all order items atomically, roll back on a bad productId) was new. I ended up writing the step by step flow in planning.md before touching code and that helped a lot. The cascade delete rule was another thing I had to play with in Prisma Studio to actually convince myself it worked.
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
 
-Add your response here
+A few things. First, I would deploy to Render, that was the one stretch I did not get to. Second, I would add real auth instead of the email hash trick I am using to derive a customer id. Right now any email maps to a number and that is good enough to make the past orders filter work but it is obviously not how a real store should track customers. Third, I would split the order status into an enum and add a small admin view to flip orders from pending to shipped. Right now PUT /orders/:id works but there is no UI for it.
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
-Add your response here
+The demo flow itself went smoothly because I scripted out the curl requests ahead of time and made sure each one returned the exact response I wanted to show. What I would do differently is spend less time reading the JSON aloud and more time talking about why the design is the way it is, especially the transaction rollback. Watching a peer's demo, the thing I want to steal is how they used Prisma Studio side by side with the API calls to show the database state changing in real time, that landed better than just trusting the curl output.
 
 ### Open-source libraries used
 
@@ -121,4 +120,4 @@ Add your response here
 
 ### Shout out
 
-Add your response here
+Daniel, Ardelia
