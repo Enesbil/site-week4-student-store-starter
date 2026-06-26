@@ -2,6 +2,8 @@
 
 Submitted by: **Muhammed Enes Bilek**
 
+Time spent 10 hrs 
+
 LOOM RECORDING: https://www.loom.com/share/765354579f4246f6b259a930e0502e96
 ### Application Features
 
